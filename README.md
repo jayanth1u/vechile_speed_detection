@@ -114,6 +114,7 @@ Open **app.py** and update the camera stream:
 
 ```python
 IP_CAMERA_URL = "http://YOUR_IP:PORT/videofeed"
+IP_CAMERA_URL = 0 for your webcam
 ```
 
 > If camera position or road angle changes, recalibrate the homography source points.
@@ -144,12 +145,6 @@ http://localhost:5000
 
 ---
 
-## ⚠️ Disclaimer
-
-This project is for **educational and experimental** use only.
-Speed accuracy depends entirely on proper camera calibration and should not be used for legal enforcement.
-
----
 
 ## 🔮 Future Improvements
 
