@@ -1,135 +1,160 @@
-Real-Time Vehicle Speed Detection Web App
+ Vehicle Speed Detection using YOLOv8 & Homography
 
-A browser-based system that measures vehicle speed from a live camera feed using computer vision and object tracking.
-Built with YOLOv8, OpenCV, and Flask, this project estimates vehicle speeds in km/h by correcting perspective distortion with homography.
+A real-time web application that estimates vehicle speed from a live IP camera stream using computer vision and object tracking.
 
-Designed for learning, experimentation, and smart traffic analytics projects.
+This project combines **YOLOv8**, **OpenCV**, and **Flask** to detect vehicles, track them across frames, and calculate their speed in **km/h** using perspective transformation.
 
-✨ Highlights
+> Built for learning, experimentation, and traffic analytics research.
 
-Live vehicle detection and ID tracking with YOLOv8
+---
 
-Perspective (homography) correction for real-world distance mapping
+## 🌟 Key Features
 
-Instant speed estimation displayed over each vehicle
+* Real-time vehicle detection and tracking
+* Perspective correction using homography for accurate distance mapping
+* Live speed display on each detected vehicle
+* Smooth browser video streaming
+* Multi-threaded frame capture for performance
+* Exponential Moving Average (EMA) speed smoothing
+* Stationary vehicle detection
+* On-screen calibration zone for measurement accuracy
 
-Smooth video streaming directly in the browser
+---
 
-Multi-threaded frame capture for better performance
+## 🛠️ Technology Stack
 
-Exponential Moving Average (EMA) to stabilize speed readings
+| Component            | Technology           |
+| -------------------- | -------------------- |
+| Backend              | Python, Flask        |
+| Computer Vision      | OpenCV               |
+| Object Detection     | YOLOv8 (Ultralytics) |
+| Tracking             | BoT-SORT             |
+| Numerical Processing | NumPy, SciPy         |
+| Frontend             | HTML, CSS            |
 
-Detects stationary vehicles
+---
 
-Visual calibration area to improve measurement accuracy
+## 📂 Project Structure
 
-🧰 Tech Stack
-Layer	Tools Used
-Backend	Python, Flask
-Vision	OpenCV
-Detection	YOLOv8 (Ultralytics)
-Tracking	BoT-SORT
-Math	NumPy, SciPy
-Frontend	HTML, CSS
-📁 Project Layout
+```
 vehicle-speed-detection/
 │
-├── app.py                # Flask server + speed estimation pipeline
-├── yolov8m.pt            # Main YOLOv8 weights
-├── yolov8n.pt            # Lightweight model (optional)
+├── app.py
+├── yolov8m.pt
+├── yolov8n.pt
 ├── templates/
-│   └── index.html        # Web UI
+│   └── index.html
 ├── static/
-│   └── style.css         # Styling
+│   └── style.css
 └── README.md
+```
 
-⚙️ How the System Works
+---
 
-YOLOv8 detects and tracks vehicles frame by frame.
+## ⚙️ Working Principle
 
-A homography matrix converts pixel motion into meters.
+1. Vehicles are detected and tracked in each frame using YOLOv8.
+2. Pixel movement is converted into real-world distance using a homography matrix.
+3. Distance and time are used to calculate speed.
+4. EMA smoothing reduces noise and sudden spikes.
+5. Speed is rendered above each vehicle in the video stream.
 
-Distance traveled over time is used to compute speed.
+### 📐 Speed Calculation Formula
 
-EMA smoothing reduces sudden fluctuations.
+```
+Speed (km/h) = (Distance in meters / Time in seconds) × 3.6
+```
 
-The calculated speed (km/h) is drawn above each vehicle.
+---
 
-Speed Formula
+## ✅ System Requirements
 
-speed (km/h) = (distance_in_meters / time_in_seconds) × 3.6
+* Python 3.9+
+* IP Camera stream (Android IP Webcam or RTSP)
+* GPU recommended (optional)
 
-✅ Requirements
+---
 
-Python 3.9 or higher
+## 🚀 Installation Guide
 
-IP camera stream (Android IP Webcam / RTSP camera)
+### Step 1 — Clone Repository
 
-GPU is helpful but optional
-
-🚀 Setup Instructions
-1) Clone the repo
+```bash
 git clone https://github.com/YOUR-USERNAME/vehicle-speed-detection.git
 cd vehicle-speed-detection
+```
 
-2) Create & activate virtual environment
+### Step 2 — Create Virtual Environment
 
-Windows
+**Windows**
 
+```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
+**Mac / Linux**
 
-Mac/Linux
-
+```bash
 python -m venv venv
 source venv/bin/activate
+```
 
-3) Install dependencies
+### Step 3 — Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-🔧 Configuration
+---
 
-Open app.py and set your camera stream URL:
+## 🔧 Configuration
 
+Open **app.py** and update the camera stream:
+
+```python
 IP_CAMERA_URL = "http://YOUR_IP:PORT/videofeed"
+```
 
+> If camera position or road angle changes, recalibrate the homography source points.
 
-If your camera angle or road layout changes, update the homography source points for accurate measurements.
+---
 
-▶️ Run the App
+## ▶️ Running the Application
+
+```bash
 python app.py
+```
 
+Visit in browser:
 
-Open in your browser:
-
+```
 http://localhost:5000
+```
 
-🧠 Speed Estimation Details
+---
 
-Each vehicle is assigned a unique tracking ID
+## 🧠 Speed Estimation Logic
 
-Pixel displacement is converted to meters using perspective transform
+* Unique ID assigned to each vehicle
+* Perspective transform converts pixels to meters
+* Speed filtered using min/max thresholds
+* EMA applied for stable readings
+* Handles stopped vehicles gracefully
 
-Speed is filtered using minimum/maximum thresholds
+---
 
-EMA smoothing prevents noisy spikes
+## ⚠️ Disclaimer
 
-Stationary vehicles are recognized and handled
+This project is for **educational and experimental** use only.
+Speed accuracy depends entirely on proper camera calibration and should not be used for legal enforcement.
 
-⚠️ Important Note
+---
 
-This project is intended for educational and experimental purposes.
-Accuracy depends heavily on proper camera calibration and should not be used for legal enforcement.
+## 🔮 Future Improvements
 
-🔮 Possible Enhancements
-
-Automatic lane detection
-
-License plate recognition (ANPR)
-
-Speed violation alerts
-
-Data logging to a database
-
-Cloud deployment (AWS / GCP / Azure)
+* Lane detection
+* License plate recognition
+* Speed violation alerts
+* Database logging
+* Cloud deployment support
